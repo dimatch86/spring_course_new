@@ -10,13 +10,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 @Component
-public class PhoneBookService {
+public class ContactsService {
 
     @Value("${app.path.to.write}")
     private String pathToWrite;
     private final Set<Contact> contactList;
 
-    public PhoneBookService(Set<Contact> contactList) {
+    public ContactsService(Set<Contact> contactList) {
         this.contactList = contactList;
     }
 
@@ -48,7 +48,7 @@ public class PhoneBookService {
     }
 
     private void addContact() {
-        System.out.println("Введите контакт в формате - \"Иванов Иван Иванович;+890999999;someEmail@example.example\"");
+        System.out.println("Enter contact in format - \"Ivanov Ivan Ivanovich;+890999999;someEmail@example.example\"");
         String contact = new Scanner(System.in).nextLine();
         String[] contactDetails = contact.split(";");
         if (contactDetails.length != 3 || !isValid(contactDetails)) {
@@ -60,7 +60,7 @@ public class PhoneBookService {
     }
 
     private void deleteByEmail() {
-        System.out.println("Введите email для удаления");
+        System.out.println("Enter email to delete contact");
         String email = new Scanner(System.in).nextLine();
         contactList.stream()
                 .filter(contact -> contact.getEmail().equals(email))
