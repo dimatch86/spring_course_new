@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/contact_db
+    username: contacts_user
+    password: contacts_password
+    hikari:
+      schema: contacts_schema
+
+server:
+  port: 8081
