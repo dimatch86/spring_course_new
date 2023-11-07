@@ -17,11 +17,11 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>First_name</th>
-            <th>Last_name</th>
-            <th>Email</th>
-            <th>Phone</th>
+            <th class="td">ID</th>
+            <th class="td">First_name</th>
+            <th class="td">Last_name</th>
+            <th class="td">Email</th>
+            <th class="td">Phone</th>
             <th>
                 <a href="/contact/create">Create</a>
             </th>
@@ -29,11 +29,11 @@
         </thead>
         <tbody>
         <tr th:each="contact : ${contacts}" th:class="contact-row">
-            <td th:class="td" th:text="${contact.id}">id</td>
-            <td th:class="td" th:text="${contact.firstName}">title</td>
-            <td th:class="td" th:text="${contact.lastName}">descr</td>
-            <td th:class="td" th:text="${contact.email}">pri</td>
-            <td th:class="td" th:text="${contact.phone}">phobe</td>
+            <td class="td" th:text="${contact.id}">id</td>
+            <td class="td" th:text="${contact.firstName}">title</td>
+            <td class="td" th:text="${contact.lastName}">descr</td>
+            <td class="td" th:text="${contact.email}">pri</td>
+            <td class="td" th:text="${contact.phone}">phobe</td>
             <td>
                 <a th:href="@{/contact/edit/{id}(id=${contact.id})}" href="#">Edit</a>
                 <a th:href="@{/contact/delete/{id}(id=${contact.id})}" href="#">Delete</a>

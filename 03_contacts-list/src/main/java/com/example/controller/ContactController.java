@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Contact;
 import com.example.service.ContactService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ public class ContactController {
 
     }
     @PostMapping("/contact/create")
-    public String createContact(@ModelAttribute Contact contact) {
+    public String createContact(@Valid @ModelAttribute Contact contact) {
         contactService.save(contact);
         return "redirect:/";
 
@@ -46,7 +47,7 @@ public class ContactController {
         return "redirect:/";
     }
     @PostMapping ("/contact/edit")
-    public String editContact(@ModelAttribute Contact contact) {
+    public String editContact(@Valid @ModelAttribute Contact contact) {
        contactService.editContact(contact);
        return "redirect:/";
     }

@@ -3,6 +3,11 @@ body {
     font-family: 'font', sans-serif;
 }
 
+h1 {
+    background-color: lightblue;
+    text-align: center;
+}
+
 th:not(:last-child) {
     border: 1px solid grey;
 }
@@ -63,4 +68,5 @@ td:not(:last-child) {
 
 .td {
     width: 200px;
+    padding-left: 5px;
 }

@@ -1,5 +1,7 @@
 package com.example.model;
 
+import com.example.util.ValidationUtil;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,15 +16,12 @@ import lombok.experimental.FieldNameConstants;
 public class Contact {
 
     private Long id;
+    @Pattern(regexp = ValidationUtil.FIRST_NAME_PATTERN)
     private String firstName;
+    @Pattern(regexp = ValidationUtil.LAST_NAME_PATTERN)
     private String lastName;
+    @Pattern(regexp = ValidationUtil.EMAIL_PATTERN)
     private String email;
+    @Pattern(regexp = ValidationUtil.PHONE_NUMBER_PATTERN)
     private String phone;
-
-    public Contact(String firstName, String lastName, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-    }
 }

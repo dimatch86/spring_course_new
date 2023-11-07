@@ -27,6 +27,10 @@
         <hr>
         <button type="submit" class="btn btn-primary" th:text="${creationMarker ? 'Save' : 'Edit'}">Save</button>
         <a th:href="@{/}">To main page</a>
+        <div>
+          <span th:if = "${inputError}" th:text="${inputError}" style="color: #ba6347"></span>
+        </div>
+
       </form>
     </div>
 </body>
