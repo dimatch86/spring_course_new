@@ -1,0 +1,29 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: news_database
+    ports:
+      - 5433:5432
+    restart: on-failure
+    environment:
+      POSTGRES_USER: news_user
+      POSTGRES_PASSWORD: news_password
+      POSTGRES_DB: news_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  backend:
+    container_name: backend
+    image: eclipse-temurin:19-jdk-jammy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://news_database:5432/news_db
+      SPRING_DATASOURCE_USERNAME: news_user
+      SPRING_DATASOURCE_PASSWORD: news_password
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./jars:/app
+    working_dir: /app
+    command: java -jar backend.jar
+    depends_on:
+      - postgres

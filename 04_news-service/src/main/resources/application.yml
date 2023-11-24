@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    generate-ddl: true
+    #open-in-view: false
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/news_db
+    username: news_user
+    password: news_password
+    hikari:
+      schema: news_schema

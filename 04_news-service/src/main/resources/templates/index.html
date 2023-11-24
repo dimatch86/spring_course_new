@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ContactsLIST</title>
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/users.js"></script>
+    <script src="/js/news.js"></script>
+    <script src="/js/comments.js"></script>
+    <script src="/js/categories.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+            crossorigin="anonymous">
+    <link rel="icon" href="/img/favicon.ico">
+</head>
+<body>
+<div class="container">
+    <h1 class="main-header">Content_management_dashboard</h1>
+    <div id="contact-form" class="common-form">
+        <form>
+            <h2 >Добавление пользователя</h2>
+            <label>Имя:</label>
+            <input type="text" id="firstName" name="name" value="" required>
+
+            <hr>
+            <button id="save-contact" class="btn btn-primary">Save</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="edit-form" class="common-form">
+        <form>
+            <h2 >Редактирование пользователя</h2>
+            <label>ID пользователя:</label>
+            <input type="text" id="existedId" name="userId"  required>
+            <label>Новое имя:</label>
+            <input type="text" id="newName" name="name" value="" required>
+
+            <hr>
+            <button id="edit-contact" class="btn btn-primary">Edit</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="del-user-form" class="common-form">
+        <form>
+            <h2>Удаление пользователя</h2>
+            <label>ID пользователя:</label>
+            <input type="text" id="id" value="">
+            <hr>
+            <button id="delete-user" class="btn btn-danger">Удалить</button>
+        </form>
+    </div>
+    <div id="news-form" class="common-form">
+        <form>
+            <h2 >Добавление новости</h2>
+            <label>ID пользователя:</label>
+            <input type="text" id="user-id" name="userId" value="">
+            <label>Категория1:</label>
+            <input type="text" id="tag1-id" name="category" value="">
+            <label>Категория2:</label>
+            <input type="text" id="tag2-id" name="category" value="">
+            <label>Текст новости:</label>
+            <input type="text" id="newsText" name="text" value="" required>
+
+            <hr>
+            <button id="save-news-btn" class="btn btn-primary">Save</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="edit-news-form" class="common-form">
+        <form>
+            <h2 >Редактирование Новости</h2>
+            <label>ID пользователя:</label>
+            <input type="text" id="user_news_id" name="userId"  required>
+            <label>Категория:</label>
+            <input type="text" id="tag_id" name="category"  required>
+            <label>ID новости:</label>
+            <input type="text" id="news_id" name="newsId"  required>
+            <label>Новый текст:</label>
+            <input type="text" id="newnew" name="text" value="" required>
+
+            <hr>
+            <button id="edit-news" class="btn btn-primary">Edit</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="del-news-form" class="common-form">
+        <form>
+            <h2>Удаление новости</h2>
+            <label>ID новости:</label>
+            <input type="text" id="news-id" value="">
+            <label>Кто удаляет:</label>
+            <input type="text" id="author-id" value="">
+            <hr>
+            <button id="delete-news" class="btn btn-danger">Удалить</button>
+        </form>
+    </div>
+    <div id="comment-form" class="common-form">
+        <form>
+            <h2 >Добавление комментария</h2>
+            <label>ID пользователя:</label>
+            <input type="text" id="user-id-comment" name="userId" value="">
+            <label>ID новости:</label>
+            <input type="text" id="news-id-comment" name="newsId" value="">
+            <label>Текст комментария:</label>
+            <input type="text" id="commentText" name="text" value="" required>
+
+            <hr>
+            <button id="save-comment-btn" class="btn btn-primary">Save</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="edit-comment-form" class="common-form">
+        <form>
+            <h2 >Редактирование Комментария</h2>
+            <label for="user_comment_id">ID пользователя:</label>
+            <input type="text" id="user_comment_id" name="userId"  required>
+
+            <label for="comment_id">ID комментария:</label>
+            <input type="text" id="comment_id" name="commentId"  required>
+            <label for="newcomment">Новый текст:</label>
+            <input type="text" id="newcomment" name="text" value="" required>
+
+            <hr>
+            <button id="edit-comment" class="btn btn-primary">Edit</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="del-comment-form" class="common-form">
+        <form>
+            <h2>Удаление комментария</h2>
+            <label for="comment-id">ID комментария:</label>
+            <input type="text" id="comment-id" value="">
+            <label>Кто удаляет:</label>
+            <input type="text" id="author-comment-id" value="">
+            <hr>
+            <button id="delete-comment" class="btn btn-danger">Удалить</button>
+        </form>
+    </div>
+    <div id="category-form" class="common-form">
+        <form>
+            <h2 >Добавление категории</h2>
+            <label>Категория:</label>
+            <input type="text" id="category_name" name="tag" value="" required>
+
+            <hr>
+            <button id="save-category" class="btn btn-primary">Save</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="edit-category-form" class="common-form">
+        <form>
+            <h2 >Редактирование категории</h2>
+            <label>ID категории:</label>
+            <input type="text" id="category_id" name="categoryId"  required>
+            <label>Новая категория:</label>
+            <input type="text" id="newCategory" name="tag" value="" required>
+
+            <hr>
+            <button id="edit-category" class="btn btn-primary">Edit</button>
+            <a href="/">To main page</a>
+
+        </form>
+    </div>
+    <div id="del-category-form" class="common-form">
+        <form>
+            <h2>Удаление категории</h2>
+            <label>ID категории:</label>
+            <input type="text" id="category-id" value="">
+            <hr>
+            <button id="delete-category" class="btn btn-danger">Удалить</button>
+        </form>
+    </div>
+
+    <div class="mo">
+
+        <!-- Модальное содержание -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="mo-content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="app-containers">
+
+        <div class="user-container">
+
+            <div class="nav-area">
+                <h3 class="nav-title">Пользователи</h3>
+                <button id="create-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_user.png" alt="adduser" width="20px"></button>
+                <button id="edit-btn" class="my-btn my-edit-btn"><img class="edititemicon" src="/img/edit.png" alt="edituser" width="20px"></button>
+                <button id="del-btn" class="my-btn my-del-btn"><img class="delusericon" src="/img/del.png" alt="deleteuser" width="20px"></button>
+            </div>
+            <hr>
+            <label>Page:</label>
+            <input type="number" class="input" id="users-page" name="page" min="0" value="0" required>
+            <div>
+                <span class="span_info">Юзер - Кол. новостей</span>
+            </div>
+
+            <div class="user-list">
+            </div>
+        </div>
+        <div class="news-container">
+
+            <div class="nav-area">
+                <h3 class="nav-title">Новости</h3>
+                <button id="create-news-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_doc.png" alt="addnews" width="20px"></button>
+                <button id="edit-news-btn" class="my-btn my-edit-btn"><img class="editusericon" src="/img/edit.png" alt="editnews" width="20px"></button>
+                <button id="del-news-btn" class="my-btn my-del-btn"><img class="delusericon" src="/img/del.png" alt="deletenews" width="20px"></button>
+            </div>
+            <hr>
+            <label for="news-page">Page:</label>
+            <input type="number" class="input" id="news-page" name="page" min="0" value="0" required>
+            <div>
+                <span class="span_info">Новость - Юзер - Комменты</span>
+            </div>
+
+            <div class="news-list">
+            </div>
+        </div>
+        <div class="comments-container">
+            <div class="nav-area">
+                <h3 class="nav-title">Комменты</h3>
+                <button id="create-comment-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_doc.png" alt="addcomment" width="20px"></button>
+                <button id="edit-comment-btn" class="my-btn my-edit-btn"><img class="editusericon" src="/img/edit.png" alt="editcomment" width="20px"></button>
+                <button id="del-comment-btn" class="my-btn my-del-btn"><img class="delusericon" src="/img/del.png" alt="deletcomment" width="20px"></button>
+            </div>
+            <hr>
+
+            <label for="news">Новость:</label>
+            <input type="number" class="input" id="news" name="news" min="1" value="1" required>
+            <div class="comments-list">
+
+            </div>
+        </div>
+        <div class="tag-container">
+
+            <div class="nav-area">
+                <h3 class="nav-title">Тэги</h3>
+                <button id="create-tag-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_doc.png" alt="addcategory" width="20px"></button>
+                <button id="edit-tag-btn" class="my-btn my-edit-btn"><img class="editusericon" src="/img/edit.png" alt="editcategory" width="20px"></button>
+                <button id="del-tag-btn" class="my-btn my-del-btn"><img class="delusericon" src="/img/del.png" alt="deletecategory" width="20px"></button>
+            </div>
+            <hr>
+            <label for="tag-page">Page:</label>
+            <input type="number" class="input" id="tag-page" name="page" min="0" value="0" required>
+            <div>
+                <span class="span_info">Категория - Кол.новостей</span>
+            </div>
+            <div class="tag-list">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
