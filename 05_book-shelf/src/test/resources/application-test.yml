@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    #generate-ddl: true
+    show-sql: true
+  datasource:
+    hikari:
+      schema: books_schema_test
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS books_schema_test
+app:
+  redis:
+    enable: true
+  cache:
+    cacheType: redis
+    cache-names:
+      - booksByCategory
+      - bookByTitleAndAuthor
+    caches:
+      booksByCategory:
+        expiry: 10m
+      bookByTitleAndAuthor:
+        expiry: 10m
