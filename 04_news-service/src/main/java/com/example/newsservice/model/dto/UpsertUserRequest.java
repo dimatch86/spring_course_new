@@ -8,4 +8,7 @@ public class UpsertUserRequest {
 
     @NotBlank(message = "Имя должно быть заполнено!")
     private String name;
+
+    @NotBlank(message = "Пароль должен быть заполнен!")
+    private String password;
 }

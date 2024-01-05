@@ -1,5 +1,7 @@
 
 $(function (){
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
 
     const appendComment = function(data){
         let commentCode = '<a href="#" class="comment-link" data-id="' + data.id + '">' + data.id + '.' + data.text + '</a><span> Новость №: ' + data.newsId + '</span><br>';
@@ -13,6 +15,9 @@ $(function (){
         $.ajax({
             method: "GET",
             url: '/api/v1/comment/' + newsId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function (response) {
 
                 $('.comments-list').children().remove();
@@ -62,6 +67,9 @@ $(function (){
             url: '/api/v1/comment',
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
                 $('.common-form').css('display', 'none');
@@ -88,12 +96,14 @@ $(function (){
 
         };
         let commentId = $('#comment_id').val();
-        let authorId = $('#user_comment_id').val();
         $.ajax({
             method: "POST",
-            url: '/api/v1/comment/' + commentId + '?authorId=' + authorId,
+            url: '/api/v1/comment/' + commentId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#edit-comment-form').css('display', 'none');
@@ -110,10 +120,12 @@ $(function (){
     //Deleting comment
     $('#delete-comment').click(function(){
         let commentId = $('#comment-id').val();
-        let authorId = $('#author-comment-id').val();
         $.ajax({
             method: "DELETE",
-            url: '/api/v1/comment/' + commentId + '?authorId=' + authorId,
+            url: '/api/v1/comment/' + commentId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#del-comment-form').css('display', 'none');

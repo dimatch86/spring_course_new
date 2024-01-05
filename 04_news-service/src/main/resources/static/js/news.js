@@ -1,4 +1,6 @@
 $(function(){
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
 
     const loadNews = function(data){
         let newsCode = '<a href="#" class="news-link" data-id="' + data.id + '">' + data.id + '.' + data.text + ' - ' + data.userId + ' - ' + data.commentsCount +'</a><br>';
@@ -34,21 +36,39 @@ $(function(){
     });
 
     //Load news
-    $.get('/api/v1/news?pageSize=2&pageNumber=0', function(response)
-    {
-        const property = 'newsList';
-        const newsList = response[property];
-        for(let i in newsList) {
+    $.ajax({
+        method: "GET",
+        url: '/api/v1/news?pageSize=2&pageNumber=0',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+        },
+        success: function (response) {
+            const property = 'newsList';
+            const newsList = response[property];
+            for(let i in newsList) {
 
-            loadNews(newsList[i]);
+                loadNews(newsList[i]);
+            }
+        },
+        error: function (response) {
+            if(response.status === 401 || response.status === 403) {
+                $('.news-list')
+                    .append('<div style="color: red">' + 'Нет прав для просмотра' + '</div>');
+            }
         }
     });
+
     $('#news-page').click(function () {
 
         let page = $('#news-page').val();
         $.ajax({
             method: "GET",
             url: '/api/v1/news?pageSize=2&pageNumber=' + page,
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + btoa(username + ":" + password),
+            },
             success: function(response)
             {
                 $('.news-list').children().remove();
@@ -105,9 +125,11 @@ $(function(){
             url: '/api/v1/news',
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(username + ":" + password),
+            },
             success: function(response)
             {
-                console.log(response);
                 $('.common-form').css('display', 'none');
                 appendNews(response);
 
@@ -124,7 +146,6 @@ $(function(){
     $('#edit-news').click(function()
     {
         let data = {
-            'userId': $('#user_news_id').val(),
             'text': $('#newnew').val(),
             'categories': [
                 $('#tag_id').val()
@@ -132,12 +153,15 @@ $(function(){
         };
 
         let newsId = $('#news_id').val();
-        let authorId = $('#user_news_id').val();
+
         $.ajax({
             method: "POST",
-            url: '/api/v1/news/' + newsId + '?authorId=' + authorId,
+            url: '/api/v1/news/' + newsId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#edit-news-form').css('display', 'none');
@@ -154,10 +178,12 @@ $(function(){
     //Deleting news
     $('#delete-news').click(function(){
         let newsId = $('#news-id').val();
-        let authorId = $('#author-id').val();
         $.ajax({
             method: "DELETE",
-            url: '/api/v1/news/' + newsId + '?authorId=' + authorId,
+            url: '/api/v1/news/' + newsId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#del-news-form').css('display', 'none');
@@ -179,6 +205,9 @@ $(function(){
         $.ajax({
             method: "GET",
             url: '/api/v1/news/' + newsId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
 

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,9 +39,9 @@ public class News {
     @ToString.Exclude
     private List<Comment> commentList;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "category_to_news",
             joinColumns = {@JoinColumn(name = "news_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 }

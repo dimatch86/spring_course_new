@@ -186,3 +186,8 @@ td:not(:last-child) {
 .input {
     width: 55px;
 }
+
+.auth-info {
+    display: flex;
+    justify-content: space-between;
+}

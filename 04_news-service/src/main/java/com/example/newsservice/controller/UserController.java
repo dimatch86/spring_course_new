@@ -5,6 +5,8 @@ import com.example.newsservice.model.dto.UpsertUserRequest;
 import com.example.newsservice.model.dto.UserListResponse;
 import com.example.newsservice.model.dto.UserResponse;
 import com.example.newsservice.model.dto.pagination.PageParameter;
+import com.example.newsservice.model.entity.Role;
+import com.example.newsservice.model.entity.RoleType;
 import com.example.newsservice.model.entity.User;
 import com.example.newsservice.service.UserService;
 import jakarta.validation.Valid;
@@ -33,14 +35,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@Valid @RequestBody UpsertUserRequest request) {
-        User user = userService.saveUser(userMapper.requestToUser(request));
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody UpsertUserRequest request, @RequestParam RoleType roleType) {
+        User user = userService.saveUser(userMapper.requestToUser(request), Role.from(roleType));
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.userToResponse(user));
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UpsertUserRequest request) {
-        User user = userService.updateUser(userMapper.requestToUser(id, request));
+    public ResponseEntity<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UpsertUserRequest request, @RequestParam RoleType roleType) {
+        User user = userService.updateUser(userMapper.requestToUser(id, request), Role.from(roleType));
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.userToResponse(user));
     }
 
@@ -48,5 +50,11 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/role/{id}")
+    public ResponseEntity<UserResponse> addRole(@PathVariable Long id, @RequestParam RoleType roleType) {
+        User user = userService.addRole(id, roleType);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.userToResponse(user));
     }
 }

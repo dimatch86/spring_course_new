@@ -21,7 +21,7 @@ public abstract class NewsMapperDelegate implements NewsMapper {
     CategoryService categoryService;
 
     @Override
-    public News requestToNews(CreateNewsRequest request) {
+    public News requestToNews(CreateNewsRequest request, String userName) {
 
         List<Category> categoryList = request.getCategories().stream()
                 .filter(c -> !c.isEmpty())
@@ -30,14 +30,14 @@ public abstract class NewsMapperDelegate implements NewsMapper {
 
         return News.builder()
                 .text(request.getText())
-                .user(userService.findById(request.getUserId()))
+                .user(userService.findUserByName(userName))
                 .categories(categoryList)
                 .build();
     }
 
     @Override
-    public News requestToNews(Long newsId, CreateNewsRequest request) {
-        News news = requestToNews(request);
+    public News requestToNews(Long newsId, CreateNewsRequest request, String userName) {
+        News news = requestToNews(request, userName);
         news.setId(newsId);
         return news;
     }

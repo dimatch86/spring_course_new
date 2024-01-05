@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Registration Form</title>
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/auth.js"></script>
+    <link rel="stylesheet" href="/css/auth-styles.css" crossorigin="anonymous"/>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+            crossorigin="anonymous">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="login-form-wrap">
+    <h2>New User Registration</h2>
+    <form id="login-form">
+        <p>
+            <input type="text" id="username" name="name" placeholder="Username" required><i class="validation"><span></span><span></span></i>
+        </p>
+        <p>
+            <input type="password" id="password" name="password" placeholder="Password" required><i class="validation"><span></span><span></span></i>
+        </p>
+        <p>
+            <select id="regroletype" name="role" required>
+                <option value="ROLE_USER">USER</option>
+                <option value="ROLE_ADMIN">ADMIN</option>
+                <option value="ROLE_MODERATOR">MODERATOR</option>
+            </select>
+        </p>
+        <p>
+            <input type="button" id="reg-btn" value="Register">
+        </p>
+    </form>
+    <div id="create-account-wrap">
+    </div>
+</div>
+
+</body>
+</html>

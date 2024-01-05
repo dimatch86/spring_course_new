@@ -13,11 +13,11 @@ import java.util.List;
 @DecoratedWith(NewsMapperDelegate.class)
 public interface NewsMapper {
 
-    News requestToNews(CreateNewsRequest request);
+    News requestToNews(CreateNewsRequest request, String userName);
     Category map(String value);
 
     @Mapping(source = "newsId", target = "id")
-    News requestToNews(Long newsId, CreateNewsRequest request);
+    News requestToNews(Long newsId, CreateNewsRequest request, String userName);
 
     @Mapping(source = "user.id", target = "userId")
     NewsResponse newsToResponse(News news);

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ContactsLIST</title>
     <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/auth.js"></script>
     <script src="/js/users.js"></script>
     <script src="/js/news.js"></script>
     <script src="/js/comments.js"></script>
@@ -19,25 +20,27 @@
 <body>
 <div class="container">
     <h1 class="main-header">Content_management_dashboard</h1>
-    <div id="contact-form" class="common-form">
-        <form>
-            <h2 >Добавление пользователя</h2>
-            <label>Имя:</label>
-            <input type="text" id="firstName" name="name" value="" required>
-
-            <hr>
-            <button id="save-contact" class="btn btn-primary">Save</button>
-            <a href="/">To main page</a>
-
-        </form>
+    <div class="auth-info">
+        <div>
+            <span>Текущий пользователь: </span> <a id="current" href="#"></a>
+        </div>
+        <a id="logout" href="#">Logout</a>
     </div>
     <div id="edit-form" class="common-form">
         <form>
             <h2 >Редактирование пользователя</h2>
-            <label>ID пользователя:</label>
-            <input type="text" id="existedId" name="userId"  required>
-            <label>Новое имя:</label>
+            <label for="existedId">ID пользователя:</label>
+            <input type="text" id="existedId" name="userId" required>
+            <label for="newName">Новое имя:</label>
             <input type="text" id="newName" name="name" value="" required>
+            <label for="newPassword">Новый пароль:</label>
+            <input type="text" id="newPassword" name="password" value="" required>
+            <label for="roletype">Новое ауторити:</label>
+            <select id="roletype" name="role" required>
+                <option value="ROLE_USER">USER</option>
+                <option value="ROLE_ADMIN">ADMIN</option>
+                <option value="ROLE_MODERATOR">MODERATOR</option>
+            </select>
 
             <hr>
             <button id="edit-contact" class="btn btn-primary">Edit</button>
@@ -57,8 +60,6 @@
     <div id="news-form" class="common-form">
         <form>
             <h2 >Добавление новости</h2>
-            <label>ID пользователя:</label>
-            <input type="text" id="user-id" name="userId" value="">
             <label>Категория1:</label>
             <input type="text" id="tag1-id" name="category" value="">
             <label>Категория2:</label>
@@ -75,8 +76,6 @@
     <div id="edit-news-form" class="common-form">
         <form>
             <h2 >Редактирование Новости</h2>
-            <label>ID пользователя:</label>
-            <input type="text" id="user_news_id" name="userId"  required>
             <label>Категория:</label>
             <input type="text" id="tag_id" name="category"  required>
             <label>ID новости:</label>
@@ -95,8 +94,6 @@
             <h2>Удаление новости</h2>
             <label>ID новости:</label>
             <input type="text" id="news-id" value="">
-            <label>Кто удаляет:</label>
-            <input type="text" id="author-id" value="">
             <hr>
             <button id="delete-news" class="btn btn-danger">Удалить</button>
         </form>
@@ -104,8 +101,6 @@
     <div id="comment-form" class="common-form">
         <form>
             <h2 >Добавление комментария</h2>
-            <label>ID пользователя:</label>
-            <input type="text" id="user-id-comment" name="userId" value="">
             <label>ID новости:</label>
             <input type="text" id="news-id-comment" name="newsId" value="">
             <label>Текст комментария:</label>
@@ -120,8 +115,6 @@
     <div id="edit-comment-form" class="common-form">
         <form>
             <h2 >Редактирование Комментария</h2>
-            <label for="user_comment_id">ID пользователя:</label>
-            <input type="text" id="user_comment_id" name="userId"  required>
 
             <label for="comment_id">ID комментария:</label>
             <input type="text" id="comment_id" name="commentId"  required>
@@ -139,8 +132,6 @@
             <h2>Удаление комментария</h2>
             <label for="comment-id">ID комментария:</label>
             <input type="text" id="comment-id" value="">
-            <label>Кто удаляет:</label>
-            <input type="text" id="author-comment-id" value="">
             <hr>
             <button id="delete-comment" class="btn btn-danger">Удалить</button>
         </form>
@@ -198,7 +189,7 @@
 
             <div class="nav-area">
                 <h3 class="nav-title">Пользователи</h3>
-                <button id="create-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_user.png" alt="adduser" width="20px"></button>
+                <!--<button id="create-btn" class="my-btn my-create-btn"><img class="addusericon" src="/img/add_user.png" alt="adduser" width="20px"></button>-->
                 <button id="edit-btn" class="my-btn my-edit-btn"><img class="edititemicon" src="/img/edit.png" alt="edituser" width="20px"></button>
                 <button id="del-btn" class="my-btn my-del-btn"><img class="delusericon" src="/img/del.png" alt="deleteuser" width="20px"></button>
             </div>

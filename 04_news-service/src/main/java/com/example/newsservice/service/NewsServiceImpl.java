@@ -59,7 +59,7 @@ public class NewsServiceImpl implements NewsService {
     public News updateNews(News news) {
 
         List<Category> existedCategories = prepareCategories(news);
-        User user = userService.findById(news.getUser().getId());
+        User user = userService.findUserByName(news.getUser().getName());
         News existedNews = findById(news.getId());
         BeanUtil.copyNonNullProperties(news, existedNews);
         existedNews.setUser(user);

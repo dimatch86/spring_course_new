@@ -1,5 +1,7 @@
 
 $(function (){
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
 
     const loadCategory = function(data){
         let categoryCode = '<a href="#" class="category-link" data-id="' + data.id + '">' + data.id + '.' + data.tag +  ' - ' + data.newsCount +'</a><br>';
@@ -50,13 +52,26 @@ $(function (){
     });
 
     //Load categories
-    $.get('/api/v1/category?pageSize=2&pageNumber=0', function(response)
-    {
-        const property = 'categoryResponseList';
-        const categoryList = response[property];
-        for(let i in categoryList) {
+    $.ajax({
+        method: "GET",
+        url: '/api/v1/category?pageSize=2&pageNumber=0',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+        },
+        success: function (response) {
+            const property = 'categoryResponseList';
+            const categoryList = response[property];
+            for(let i in categoryList) {
 
-            loadCategory(categoryList[i]);
+                loadCategory(categoryList[i]);
+            }
+        },
+        error: function (response) {
+            if(response.status === 401 || response.status === 403) {
+                $('.user-list')
+                    .append('<div style="color: red">' + 'Нет прав для просмотра' + '</div>');
+            }
         }
     });
     $('#tag-page').click(function () {
@@ -65,6 +80,10 @@ $(function (){
         $.ajax({
             method: "GET",
             url: '/api/v1/category?pageSize=2&pageNumber=' + page,
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
                 $('.tag-list').children().remove();
@@ -94,6 +113,9 @@ $(function (){
             url: '/api/v1/category',
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
                 $('.common-form').css('display', 'none');
@@ -121,6 +143,9 @@ $(function (){
             url: '/api/v1/category/' + categoryId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#edit-category-form').css('display', 'none');
@@ -141,6 +166,9 @@ $(function (){
         $.ajax({
             method: "GET",
             url: '/api/v1/category/' + categoryId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
 
@@ -164,6 +192,9 @@ $(function (){
         $.ajax({
             method: "DELETE",
             url: '/api/v1/category/' + categoryId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#del-category-form').css('display', 'none');

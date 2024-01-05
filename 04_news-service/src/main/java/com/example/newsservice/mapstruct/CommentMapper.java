@@ -13,7 +13,7 @@ import java.util.List;
 @DecoratedWith(CommentMapperDelegate.class)
 public interface CommentMapper {
 
-    Comment requestToComment(UpsertCommentRequest request);
+    Comment requestToComment(UpsertCommentRequest request, String userName);
     Comment requestToComment(CommentUpdateRequest request);
     Comment requestToComment(Long commentId, CommentUpdateRequest request);
 
