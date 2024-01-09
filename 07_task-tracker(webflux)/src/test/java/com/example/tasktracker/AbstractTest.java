@@ -1,5 +1,6 @@
 package com.example.tasktracker;
 
+import com.example.tasktracker.entity.RoleType;
 import com.example.tasktracker.entity.Task;
 import com.example.tasktracker.entity.TaskStatus;
 import com.example.tasktracker.entity.User;
@@ -51,8 +52,8 @@ public abstract class AbstractTest {
     public void setup() {
         userRepository.saveAll(
                 List.of(
-                        new User(AUTHOR_ID, "Author", "authorEmail@mail.ru"),
-                        new User(ASSIGNEE_ID, "Assignee", "assigneeEmail@mail.ru")
+                        new User(AUTHOR_ID, "Author", "goldens", "authorEmail@mail.ru", Set.of(RoleType.ROLE_MANAGER)),
+                        new User(ASSIGNEE_ID, "Assignee", "passwore", "assigneeEmail@mail.ru", Set.of(RoleType.ROLE_USER))
                 )).collectList().block();
         taskRepository.saveAll(
                 List.of(

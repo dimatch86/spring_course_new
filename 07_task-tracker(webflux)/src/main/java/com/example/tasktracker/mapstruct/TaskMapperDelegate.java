@@ -13,7 +13,7 @@ import java.util.UUID;
 public abstract class TaskMapperDelegate implements TaskMapper {
 
     @Override
-    public Task requestToTask(UpsertTaskRequest request) {
+    public Task requestToTask(UpsertTaskRequest request, String userId) {
         return Task.builder()
                 .id(UUID.randomUUID().toString())
                 .name(request.getName())
@@ -21,7 +21,7 @@ public abstract class TaskMapperDelegate implements TaskMapper {
                 .status(TaskStatus.TODO)
                 .createdAt(Instant.now())
                 .updatedAt(Instant.now())
-                .authorId(request.getAuthorId())
+                .authorId(userId)
                 .assigneeId(request.getAssigneeId())
                 .observerIds(Set.of())
                 .build();

@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +22,10 @@ public class User {
     @Id
     private String id;
     private String userName;
+    private String password;
     @Indexed(unique = true)
     private String email;
 
+    @Field("roles")
+    private Set<RoleType> roles = new HashSet<>();
 }

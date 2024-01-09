@@ -1,9 +1,14 @@
 package com.example.tasktracker.controller;
 
+import com.example.tasktracker.entity.User;
 import com.example.tasktracker.mapstruct.TaskMapper;
-import com.example.tasktracker.model.*;
+import com.example.tasktracker.model.ObserverDto;
+import com.example.tasktracker.model.TaskResponse;
+import com.example.tasktracker.model.UpdateTaskRequest;
+import com.example.tasktracker.model.UpsertTaskRequest;
 import com.example.tasktracker.publisher.TaskCreatePublisher;
 import com.example.tasktracker.service.TaskService;
+import com.example.tasktracker.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tasks")
@@ -21,6 +28,7 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskMapper taskMapper;
     private final TaskCreatePublisher publisher;
+    private final UserService userService;
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<TaskResponse>> getById(@PathVariable String id) {
@@ -33,8 +41,12 @@ public class TaskController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<TaskResponse>> createTask(@RequestBody UpsertTaskRequest taskRequest) {
-        return taskService.saveTask(taskMapper.requestToTask(taskRequest))
+    public Mono<ResponseEntity<TaskResponse>> createTask(@RequestBody UpsertTaskRequest taskRequest, Mono<Principal> principal) {
+        Mono<User> userMono = principal.map(Principal::getName).flatMap(userService::findByName);
+
+        return userMono.map(User::getId)
+                .flatMap(userId -> Mono.just(taskMapper.requestToTask(taskRequest, userId)))
+                .flatMap(taskService::saveTask)
                 .map(taskMapper::taskToResponse)
                 .doOnSuccess(publisher::publish)
                 .map(ResponseEntity::ok);

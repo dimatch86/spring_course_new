@@ -12,7 +12,7 @@ import org.mapstruct.ReportingPolicy;
 @DecoratedWith(TaskMapperDelegate.class)
 public interface TaskMapper {
 
-    Task requestToTask(UpsertTaskRequest request);
+    Task requestToTask(UpsertTaskRequest request, String userId);
     Task requestToTask(UpdateTaskRequest request);
 
     TaskResponse taskToResponse(Task task);

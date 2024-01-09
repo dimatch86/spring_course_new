@@ -1,4 +1,7 @@
 $(function(){
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+    $('#current').append(username);
 
     const loadUser = function(data){
         let userCode = '<a href="#" class="user-link" data-id="' + data.id + '">' +  data.userName + ' - ' + data.email +'</a><br>';
@@ -29,37 +32,25 @@ $(function(){
 
 
    //Loading users on load page
-   $.get('/api/v1/users', function(response)
-    {
+    $.ajax({
+        method: "GET",
+        url: '/api/v1/users',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+        },
+        success: function (response) {
+            for(let i in response) {
 
-        for(let i in response) {
-
-            loadUser(response[i]);
-        }
-    });
-
-    $('#users-page').click(function () {
-
-        let page = $('#users-page').val();
-        $.ajax({
-            method: "GET",
-            url: '/api/v1/user?pageSize=2&pageNumber=' + page,
-            success: function(response)
-            {
-                $('.user-list').children().remove();
-                const property = 'users';
-                for(let i in response[property]) {
-
-                    loadUser(response[property][i]);
-                }
-            },
-            error: function(response)
-            {
-                alert(response.responseJSON.error);
+                loadUser(response[i]);
             }
-        });
-        return false;
-
+        },
+        error: function (response) {
+            if(response.status === 401 || response.status === 403) {
+                $('.user-list')
+                    .append('<div style="color: red">' + 'Нет прав для просмотра' + '</div>');
+            }
+        }
     });
 
     //Show adding user form
@@ -112,6 +103,10 @@ $(function(){
         $.ajax({
             method: "GET",
             url: '/api/v1/users/' + userId,
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
 
@@ -119,31 +114,6 @@ $(function(){
                 $('.mo-content').children().remove();
                 showUser(response);
 
-            },
-            error: function(response)
-            {
-                alert(response.responseJSON.error);
-            }
-        });
-        return false;
-    });
-
-    //Adding user
-    $('#save-contact').click(function()
-    {
-        const data = {
-            'userName': $('#firstName').val(),
-            'email': $('#email').val()
-        }
-        $.ajax({
-            method: "POST",
-            url: '/api/v1/users',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function(response)
-            {
-                $('#contact-form').css('display', 'none');
-                appendUser(response);
             },
             error: function(response)
             {
@@ -166,6 +136,9 @@ $(function(){
             url: '/api/v1/users/' + userId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#edit-form').css('display', 'none');
@@ -185,6 +158,9 @@ $(function(){
             $.ajax({
                 method: "DELETE",
                 url: '/api/v1/users/' + userId,
+                headers: {
+                    Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+                },
                 success: function()
                 {
                 $('#del-user-form').css('display', 'none');
@@ -204,6 +180,9 @@ $(function(){
         $.ajax({
             method: "DELETE",
             url: '/api/v1/users/' + userId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 window.location.reload();
@@ -215,7 +194,4 @@ $(function(){
         });
         return false;
     });
-
-
-
 });

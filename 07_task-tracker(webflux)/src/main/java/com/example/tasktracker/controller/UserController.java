@@ -1,5 +1,6 @@
 package com.example.tasktracker.controller;
 
+import com.example.tasktracker.entity.RoleType;
 import com.example.tasktracker.mapstruct.UserMapper;
 import com.example.tasktracker.model.UpsertUserRequest;
 import com.example.tasktracker.model.UserResponse;
@@ -41,8 +42,8 @@ public class UserController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody UpsertUserRequest upsertUserRequest) {
-        return userService.saveUser(userMapper.requestToUser(upsertUserRequest))
+    public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody UpsertUserRequest upsertUserRequest, @RequestParam RoleType roleType) {
+        return userService.saveUser(userMapper.requestToUser(upsertUserRequest, roleType))
                 .map(userMapper::userToResponse)
                 .map(ResponseEntity::ok);
     }

@@ -1,6 +1,7 @@
 package com.example.tasktracker.controller;
 
 import com.example.tasktracker.AbstractTest;
+import com.example.tasktracker.entity.RoleType;
 import com.example.tasktracker.entity.TaskStatus;
 import com.example.tasktracker.entity.User;
 import com.example.tasktracker.model.TaskResponse;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.security.test.context.support.WithMockUser;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -23,14 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class TaskControllerTest extends AbstractTest {
 
     @Test
+    @WithMockUser
     void whenGetAllTasks_thenReturnsListOfTasksFromDatabase() {
         var expectedData = List.of(
                 new TaskResponse(FIRST_TASK_ID, "Task 1", "Test Task 1", TaskStatus.TODO,
-                        new User(AUTHOR_ID, "Author", "authorEmail@mail.ru"),
-                        new User(ASSIGNEE_ID, "Assignee", "assigneeEmail@mail.ru"), Set.of()),
+                        new User(AUTHOR_ID, "Author", "goldens", "authorEmail@mail.ru", Set.of(RoleType.ROLE_MANAGER)),
+                        new User(ASSIGNEE_ID, "Assignee", "passwore", "assigneeEmail@mail.ru", Set.of(RoleType.ROLE_USER)), Set.of()),
                 new TaskResponse(SECOND_TASK_ID, "Task 2", "Test Task 2", TaskStatus.TODO,
-                        new User(AUTHOR_ID, "Author", "authorEmail@mail.ru"),
-                        new User(ASSIGNEE_ID, "Assignee", "assigneeEmail@mail.ru"), Set.of())
+                        new User(AUTHOR_ID, "Author", "goldens", "authorEmail@mail.ru", Set.of(RoleType.ROLE_MANAGER)),
+                        new User(ASSIGNEE_ID, "Assignee", "passwore", "assigneeEmail@mail.ru", Set.of(RoleType.ROLE_USER)), Set.of())
         );
         webTestClient.get().uri("/api/v1/tasks")
                 .exchange().expectStatus().isOk()
@@ -40,10 +43,11 @@ class TaskControllerTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser
     void whenGetTaskById_thenReturnsTaskById() {
         var expectedData = new TaskResponse(FIRST_TASK_ID, "Task 1", "Test Task 1", TaskStatus.TODO,
-                new User(AUTHOR_ID, "Author", "authorEmail@mail.ru"),
-                new User(ASSIGNEE_ID, "Assignee", "assigneeEmail@mail.ru"), Set.of());
+                new User(AUTHOR_ID, "Author", "goldens", "authorEmail@mail.ru", Set.of(RoleType.ROLE_MANAGER)),
+                new User(ASSIGNEE_ID, "Assignee", "passwore", "assigneeEmail@mail.ru", Set.of(RoleType.ROLE_USER)), Set.of());
         webTestClient.get().uri("/api/v1/tasks/" + FIRST_TASK_ID)
                 .exchange()
                 .expectStatus().isOk()
@@ -52,12 +56,13 @@ class TaskControllerTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser(username = "Author", roles = {"MANAGER"})
     void whenCreateTask_thenReturnsNewTaskWithIdAndPublishEvent() {
         StepVerifier.create(taskRepository.count())
                 .expectNext(2L)
                 .expectComplete()
                 .verify();
-        UpsertTaskRequest request = new UpsertTaskRequest("Task 3", "Test task 3", AUTHOR_ID, ASSIGNEE_ID);
+        UpsertTaskRequest request = new UpsertTaskRequest("Task 3", "Test task 3", ASSIGNEE_ID);
         webTestClient.post().uri("/api/v1/tasks")
                 .body(Mono.just(request), UpsertTaskRequest.class)
                 .exchange()
@@ -90,6 +95,7 @@ class TaskControllerTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser(roles = {"MANAGER"})
     void whenUpdateTask_thenReturnsUpdatedTask() {
         UpdateTaskRequest request = new UpdateTaskRequest();
         request.setName("New task name");
@@ -114,6 +120,7 @@ class TaskControllerTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser(roles = {"MANAGER"})
     void whenDeleteById_thenRemoveTaskFromDatabase() {
         webTestClient.delete().uri("/api/v1/tasks/{id}", FIRST_TASK_ID)
                 .exchange()

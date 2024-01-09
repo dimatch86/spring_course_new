@@ -1,4 +1,6 @@
 $(function(){
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
 
     const appendTask = function(data){
         let taskCode = '<a href="#" class="task-link" data-id="' + data.id + '">' +  data.name + ' - ' + data.description +'</a><br>';
@@ -48,10 +50,23 @@ $(function(){
     });
 
     //Loading tasks on page
-    $.get('/api/v1/tasks', function(response)
-    {
-        for(let i in response) {
-            appendTask(response[i]);
+    $.ajax({
+        method: "GET",
+        url: '/api/v1/tasks',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+        },
+        success: function (response) {
+            for(let i in response) {
+                appendTask(response[i]);
+            }
+        },
+        error: function (response) {
+            if(response.status === 401 || response.status === 403) {
+                $('.task-list')
+                    .append('<div style="color: red">' + 'Нет прав для просмотра' + '</div>');
+            }
         }
     });
 
@@ -61,7 +76,6 @@ $(function(){
         const data = {
             'name': $('#taskName').val(),
             'description': $('#description').val(),
-            'authorId': $('#author').val(),
             'assigneeId': $('#assignee').val()
         }
         $.ajax({
@@ -69,6 +83,9 @@ $(function(){
             url: '/api/v1/tasks',
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
                 $('#create-task-form').css('display', 'none');
@@ -76,6 +93,10 @@ $(function(){
             },
             error: function(response)
             {
+                if(response.status === 401 || response.status === 403) {
+                    $('#create-task-form').css('display', 'none');
+                    alert("Нет прав для создания задачи!")
+                }
                 alert(response.responseJSON.error);
             }
         });
@@ -89,6 +110,10 @@ $(function(){
         $.ajax({
             method: "GET",
             url: '/api/v1/tasks/' + taskId,
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
 
@@ -113,6 +138,9 @@ $(function(){
         $.ajax({
             method: "GET",
             url: '/api/v1/users',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function(response)
             {
 
@@ -131,6 +159,7 @@ $(function(){
         return false;
     });
 
+    //add observer from users-list
     $(document).on('click', '.observer-link', function(){
         let observerId = $(this).data('id');
         let taskId = $('#to-task').val();
@@ -142,6 +171,9 @@ $(function(){
             url: '/api/v1/tasks/observer/' + taskId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#observers-modal').css('display', 'none');
@@ -175,6 +207,9 @@ $(function(){
             url: '/api/v1/tasks/' + taskId,
             data: JSON.stringify(data),
             contentType: 'application/json',
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 $('#edit-task-form').css('display', 'none');
@@ -183,6 +218,10 @@ $(function(){
             },
             error: function(response)
             {
+                if(response.status === 401 || response.status === 403) {
+                    $('#edit-task-form').css('display', 'none');
+                    alert("Нет прав для редактирования задачи!")
+                }
                 alert(response.responseJSON.error);
             }
         });
@@ -219,12 +258,18 @@ $(function(){
         $.ajax({
             method: "DELETE",
             url: '/api/v1/tasks/' + taskId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 window.location.reload();
             },
             error: function(response)
             {
+                if(response.status === 401 || response.status === 403) {
+                    alert("Нет прав для удаления задачи!")
+                }
                 alert(response.responseJSON.error);
             }
         });
@@ -237,12 +282,19 @@ $(function(){
         $.ajax({
             method: "DELETE",
             url: '/api/v1/tasks/' + taskId,
+            headers: {
+                Authorization: "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password))),
+            },
             success: function()
             {
                 window.location.reload();
             },
             error: function(response)
             {
+                if(response.status === 401 || response.status === 403) {
+                    $('#del-task-form').css('display', 'none');
+                    alert("Нет прав для удаления задачи!")
+                }
                 alert(response.responseJSON.error);
             }
         });
